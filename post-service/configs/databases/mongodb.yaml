@@ -1,0 +1,7 @@
+database:
+  database_tag: MONGODB
+mongo:
+  database_url: "mongodb://localhost:27017"
+  database_name: "post-service"
+  posts_collection_name: "posts"
+  stats_collection_name: "post_stats"

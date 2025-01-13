@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  post-service:
+    build:
+      context: ./post-service
+      dockerfile: src/dockerfile
+    container_name: post-service
+    ports:
+      - "8000:8000"
+    environment:
+      - DOCKER_ENV=true
+      - DATABASE_CONFIG_FILE=configs/databases/mongodb.yaml
+      - MONGO_URI=mongodb://mongodb:27017
+    depends_on:
+      - mongodb
+    networks:
+      - post-service-network
+    volumes:
+      - ./post-service:/app
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    container_name: post-service-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=post-service
+    networks:
+      - post-service-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+    name: post-service-mongodb-data
+
+networks:
+  post-service-network:
+    name: post-service-network
+    driver: bridge
