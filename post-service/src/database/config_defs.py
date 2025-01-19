@@ -16,6 +16,7 @@ class DatabaseTag(Enum):
 class DatabaseConfig:
     database_tag: DatabaseTag = omegaconf.MISSING
 
+
 @dataclass
 class MongoConfig:
     database_url: str = omegaconf.MISSING

@@ -1,8 +1,10 @@
 from typing import List
-from src.server_models import Post, PostStats
+
 from src.database.database_protocol import DatabaseProtocol
+from src.server_models import Post, PostStats
 
 from .config_defs import DatabaseMainConfig, DatabaseTag
+
 
 class DatabasePipeline(DatabaseProtocol):
     def __init__(self, database: DatabaseProtocol, config: DatabaseMainConfig):
@@ -20,25 +22,24 @@ class DatabasePipeline(DatabaseProtocol):
 
     def create_post(self, post: Post) -> Post:
         return self.database.create_post(post)
-    
+
     def get_post(self, post_id: str) -> Post:
         return self.database.get_post(post_id)
-    
+
     def get_post_all(self) -> List[Post]:
         return self.database.get_post_all()
-    
+
     def update_post(self, post_id: str, post: Post) -> Post:
         return self.database.update_post(post_id, post)
-    
+
     def delete_post(self, post_id: str) -> None:
         return self.database.delete_post(post_id)
 
     def get_post_by_id(self, post_id: str) -> Post:
         return self.database.get_post_by_id(post_id)
-    
+
     def get_post_by_user_id(self, user_id: str) -> List[Post]:
         return self.database.get_post_by_user_id(user_id)
-    
+
     def get_post_stats(self, post_id: str) -> PostStats:
         return self.database.get_post_stats(post_id)
-
