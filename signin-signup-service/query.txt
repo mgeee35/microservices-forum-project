@@ -1,3 +1,4 @@
+/* DB queries */
 use login_service;
 
 CREATE TABLE USERS (
