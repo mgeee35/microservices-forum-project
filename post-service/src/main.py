@@ -18,24 +18,7 @@ database_pipeline = DatabasePipeline.new_instance_from_config(
 
 def get_post_all_pipeline():
     posts = database_pipeline.get_post_all()
-
-    if not posts:
-        return SuccessResponse(data=[])
-
-    if author:
-        posts = [post for post in posts if getattr(post, "author", "").lower() == author.lower()]
-
-    # Convert posts to dictionaries if they're not already
-    posts_dict = [post.dict() if hasattr(post, 'dict') else post for post in posts]
-    
-    for post in posts_dict:
-        if sort_by not in post:
-            post[sort_by] = ""
-
-    reverse = order == "desc"
-    posts_dict.sort(key=lambda x: x.get(sort_by, ""), reverse=reverse)
-
-    return SuccessResponse(data=posts_dict)
+    return SuccessResponse(data=posts)
 
 def get_post_by_id_pipeline(post_id: str):
     post = database_pipeline.get_post_by_id(post_id)
