@@ -1,7 +1,8 @@
 import asyncio
+from typing import Optional
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.decorators import handle_exceptions
@@ -27,17 +28,15 @@ app.add_middleware(
 
 @app.get("/list_posts")
 @handle_exceptions
-async def get_posts():
-    return await asyncio.get_event_loop().run_in_executor(None, get_post_all_pipeline)
-
-
-@app.get("/posts/{post_id}", response_model=SuccessResponse)
-@handle_exceptions
-async def get_post(post_id: str):
+async def get_posts(
+    sort_by: Optional[str] = Query("created_at", enum=["created_at", "updated_at", "title", "author"]),
+    order: Optional[str] = Query("desc", enum=["asc", "desc"]),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1)
+):
     return await asyncio.get_event_loop().run_in_executor(
-        None, get_post_by_id_pipeline, post_id
+        None, get_sorted_posts_pipeline, sort_by, order, page, page_size
     )
-
 
 @app.post("/posts", response_model=SuccessResponse)
 @handle_exceptions

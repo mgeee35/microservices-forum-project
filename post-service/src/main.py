@@ -1,6 +1,7 @@
 import os
 
 from dotenv import load_dotenv
+from pymongo import ASCENDING, DESCENDING
 
 from src.database.config_defs import DatabaseMainConfig
 from src.database.database_pipeline import DatabasePipeline
@@ -15,10 +16,27 @@ database_pipeline = DatabasePipeline.new_instance_from_config(
 )
 
 
-def get_post_all_pipeline():
-    posts = database_pipeline.get_post_all()
-    return SuccessResponse(data=posts)
+def get_sorted_posts_pipeline(sort_by: str = "created_at", order: str = "desc", page: int = 1, page_size: int = 10):
 
+    posts = database_pipeline.get_post_all()
+
+    # Return an empty list if there are no posts available
+    if not posts:
+        return SuccessResponse(data=[])
+
+    # Ensure every post includes the sort field; assign a default empty string if missing
+    for post in posts:
+        post.setdefault(sort_by, "")
+
+    # Determine sorting order and sort the posts accordingly
+    reverse_order = (order.lower() == "desc")
+    posts.sort(key=lambda post: post.get(sort_by, ""), reverse=reverse_order)
+
+    # Calculate pagination boundaries and slice the list
+    start_index = (page - 1) * page_size
+    end_index = start_index + page_size
+    paginated_posts = posts[start_index:end_index]
+    return SuccessResponse(data=paginated_posts)
 
 def get_post_by_id_pipeline(post_id: str):
     post = database_pipeline.get_post_by_id(post_id)
