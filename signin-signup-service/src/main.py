@@ -3,9 +3,14 @@ from mysql.connector import Error
 from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_cors import CORS  # CORS modülünü import ediyoruz
 import re  # Regex modülü
 
 app = Flask(__name__)
+
+# CORS'u uygulamaya dahil ediyoruz
+CORS(app)  # Bu şekilde tüm domainlere izin verir. Belirli domainler için de yapılandırılabilir.
+
 bcrypt = Bcrypt(app)
 
 # MySQL veritabanı bağlantısı
