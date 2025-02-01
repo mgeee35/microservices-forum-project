@@ -1,0 +1,298 @@
+/* Importing Google Fonts - Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #5F41E4;
+}
+#root {
+  width: 100%;
+  padding: 0.6rem;
+}
+.login-container {
+  margin: 0 auto;
+  max-width: 410px;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.signup-container {
+  margin: 0 auto;
+  max-width: 410px;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.login-container .form-title {
+  text-align: center;
+  font-size: 1.37rem;
+  font-weight: 600;
+  margin-bottom: 1.87rem;
+}
+.signup-container .signup-title {
+  text-align: center;
+  font-size: 1.37rem;
+  font-weight: 600;
+  margin-bottom: 1.87rem;
+}
+.login-form .input-wrapper {
+  height: 54px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.signup-form .input-wrapper {
+  height: 54px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.login-form .input-field {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  font-size: 1.06rem;
+  border-radius: 0.31rem;
+  border: 1px solid #bfb3f2;
+  padding: 0px 1.25rem 0 3.12rem;
+  transition: 0.2s ease;
+}
+.signup-form .input-field {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  font-size: 1.06rem;
+  border-radius: 0.31rem;
+  border: 1px solid #bfb3f2;
+  padding: 0px 1.25rem 0 3.12rem;
+  transition: 0.2s ease;
+}
+.login-form .input-field:focus {
+  border-color: #5F41E4;
+}
+.signup-form .input-field:focus {
+  border-color: #5F41E4;
+}
+.login-form .input-field::placeholder {
+  color: #9284c8;
+}
+.signup-form .input-field::placeholder {
+  color: #9284c8;
+}
+.login-form .login-button {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 54px;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2.19rem;
+  border-radius: 0.31rem;
+  background: #5F41E4;
+  transition: 0.3s ease;
+}
+.forum-button {
+  border: none;
+  outline: none;
+  width: 20%;
+  height: 54px;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2.19rem;
+  border-radius: 0.31rem;
+  background: #5F41E4;
+  transition: 0.3s ease;
+  margin-left: 40%;
+}
+
+.list-posts-by-username-button {
+  border: none;
+  outline: none;
+  width: 25%;
+  height: 54px;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2.19rem;
+  border-radius: 0.31rem;
+  background: #5F41E4;
+  transition: 0.3s ease;
+  margin-left: 15%;
+}
+
+.follow-username-button {
+  border: none;
+  outline: none;
+  width: 25%;
+  height: 54px;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2.19rem;
+  border-radius: 0.31rem;
+  background: #5F41E4;
+  transition: 0.3s ease;
+  margin-right: 15%;
+}
+.signup-form .signup-button {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 54px;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2.19rem;
+  border-radius: 0.31rem;
+  background: #5F41E4;
+  transition: 0.3s ease;
+}
+.login-form .login-button:hover {
+  background: #4320df;
+}
+.login-form .signup-button:hover {
+  background: #4320df;
+}
+.login-container .signup-prompt {
+  text-align: center;
+  font-size: 1.06rem;
+  font-weight: 500;
+  margin: 1.75rem 0 0.31rem;
+}
+.forum-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1800px;
+  height: 1000px;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #c9bfad;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.forum-header-container {
+  margin: 0 auto;
+  width: 100%; 
+  max-width: 1800px;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #87a182;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.forum-body-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1800px;
+  padding: 2rem 1.5rem;
+  border-radius: 0.5rem;
+  background: #ccc7bc;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  height: 800px;
+  overflow-y: auto;
+}
+.forum-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 0px;
+
+}
+.forum-body {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 10%;
+  display: flex;
+  height: 700px;
+  margin-top: 0%;
+  flex-direction: column;
+
+}
+.customer-content{
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 0%;
+  width: 100%;
+  height: 25%;
+
+}
+
+.forum-content{
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-top: 0%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.forum-posting-area{
+  width: 100px;
+  width: 50%;
+  height: 50%;
+  border-radius: 0.31rem;
+  margin-left: 25%;
+
+}
+
+.list-posts-input-field{
+  width: 15%;
+  height: 40px;
+  margin-left: 42.5%;
+  margin-top: 2%;
+
+}
+
+.postsArea{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: row;
+}
+
+.myPostsArea{
+  width: 50%;
+}
+
+.allPostsArea{
+  width: 50%;
+}
+
+.username-action-buttons {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  display: flex;
+  height: 200px;
+  margin-top: 0%;
+  margin-left: 0%;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+ul {
+  list-style-type: none;  /* Bullet işaretlerini kaldırır */
+  padding-left: 0;  /* Soldan iç boşluğu kaldırır */
+}
+

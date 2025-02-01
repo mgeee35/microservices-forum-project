@@ -27,16 +27,19 @@ def get_sorted_posts_pipeline(
         return SuccessResponse(data=[])
 
     if author:
-        posts = [post for post in posts if post.get("author", "").lower() == author.lower()]
+        posts = [post for post in posts if getattr(post, "author", "").lower() == author.lower()]
 
-    for post in posts:
+    # Convert posts to dictionaries if they're not already
+    posts_dict = [post.dict() if hasattr(post, 'dict') else post for post in posts]
+    
+    for post in posts_dict:
         if sort_by not in post:
             post[sort_by] = ""
 
     reverse = order == "desc"
-    posts.sort(key=lambda x: x.get(sort_by, ""), reverse=reverse)
+    posts_dict.sort(key=lambda x: x.get(sort_by, ""), reverse=reverse)
 
-    return SuccessResponse(data=posts)
+    return SuccessResponse(data=posts_dict)
 
 def get_post_by_id_pipeline(post_id: str):
     post = database_pipeline.get_post_by_id(post_id)
