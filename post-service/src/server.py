@@ -34,7 +34,6 @@ async def get_post(post_id: str):
 @app.post("/posts", response_model=SuccessResponse)
 @handle_exceptions
 async def create_post(post: Post):
-    asyncio.sleep(10)
     return await asyncio.get_event_loop().run_in_executor(
         None, create_post_pipeline, post
     )
