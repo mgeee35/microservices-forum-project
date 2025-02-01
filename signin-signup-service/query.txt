@@ -1,0 +1,24 @@
+/* DB queries */
+use login_service;
+
+CREATE TABLE USERS (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    CREATEDATETIME DATE,
+    USERNAME VARCHAR(50) NOT NULL,
+    PASSWORD VARCHAR(255) NOT NULL,
+    EMAILADDRESS VARCHAR(255),
+    ACTIVEYN	VARCHAR(1),
+    USERROLE	VARCHAR(20)
+);
+
+
+SELECT * FROM login_service.USERS;
+
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '1234';
+FLUSH PRIVILEGES;
+
+SELECT user, host, plugin FROM mysql.user;
+
+SELECT VERSION();
+
