@@ -1,8 +1,9 @@
 import os
+from typing import Optional
 
 from dotenv import load_dotenv
+from pymongo import ASCENDING, DESCENDING
 
-from src.cache import cache
 from src.database.config_defs import DatabaseMainConfig
 from src.database.database_pipeline import DatabasePipeline
 from src.server_models import Post, SuccessResponse
@@ -16,37 +17,45 @@ database_pipeline = DatabasePipeline.new_instance_from_config(
 )
 
 
-def get_post_all_pipeline():
-    posts = cache.get_all_posts()
-    if posts is None:
-        posts = database_pipeline.get_post_all()
-        cache.set_all_posts(posts)
+def get_sorted_posts_pipeline(
+    sort_by: str = "created_at",
+    order: str = "desc",
+    author: Optional[str] = None  # Still allowing author filtering
+):
+    posts = database_pipeline.get_post_all()
+
+    if not posts:
+        return SuccessResponse(data=[])
+
+    if author:
+        posts = [post for post in posts if post.get("author", "").lower() == author.lower()]
+
+    for post in posts:
+        if sort_by not in post:
+            post[sort_by] = ""
+
+    reverse = order == "desc"
+    posts.sort(key=lambda x: x.get(sort_by, ""), reverse=reverse)
+
     return SuccessResponse(data=posts)
 
-
 def get_post_by_id_pipeline(post_id: str):
-    post = cache.get_post(post_id)
-    if post is None:
-        post = database_pipeline.get_post_by_id(post_id)
-        cache.set_post(post)
+    post = database_pipeline.get_post_by_id(post_id)
     return SuccessResponse(data=post)
 
 
 def create_post_pipeline(post: Post):
     post = database_pipeline.create_post(post)
-    cache.set_post(post)
     return SuccessResponse(data=post)
 
 
 def update_post_pipeline(post_id: str, post: Post):
     post = database_pipeline.update_post(post_id, post)
-    cache.set_post(post)
     return SuccessResponse(data=post)
 
 
 def delete_post_pipeline(post_id: str):
     post = database_pipeline.delete_post(post_id)
-    cache.delete_post(post_id)
     return SuccessResponse(data=post)
 
 
