@@ -43,3 +43,7 @@ def delete_post_pipeline(post_id: str):
 def get_post_stats_pipeline(post_id: str):
     post_stats = database_pipeline.get_post_stats(post_id)
     return SuccessResponse(data=post_stats)
+
+def get_posts_by_author_pipeline(author: str):
+    posts = database_pipeline.get_posts_by_author(author)
+    return SuccessResponse(data=posts)

@@ -71,6 +71,14 @@ async def get_post_stats(post_id: str):
     )
 
 
+@app.get("/posts/author/{author}", response_model=SuccessResponse)
+@handle_exceptions
+async def get_posts_by_author(author: str):
+    return await asyncio.get_event_loop().run_in_executor(
+        None, get_posts_by_author_pipeline, author
+    )
+
+
 if __name__ == "__main__":
     if os.getenv("DOCKER_ENV") == "true":
         uvicorn.run(

@@ -52,3 +52,7 @@ class DatabasePipeline(DatabaseProtocol):
     def get_post_stats(self, post_id: str) -> PostStats:
         """Get post stats from the database"""
         return self.database.get_post_stats(post_id)
+    
+    def get_posts_by_author(self, author: str) -> List[Post]:
+        """Get all posts by author from the database"""
+        return self.database.get_posts_by_author(author)
