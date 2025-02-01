@@ -31,3 +31,6 @@ class DatabaseProtocol(Protocol):
 
     def get_post_stats(self, post_id: str) -> PostStats:
         pass
+    
+    def get_posts_by_author(self, author: str) -> List[Post]:
+        pass

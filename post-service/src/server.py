@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional
 
 import uvicorn
 from fastapi import FastAPI
@@ -26,18 +27,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/list_posts")
+@app.get("/post/list")
 @handle_exceptions
 async def get_posts():
     return await asyncio.get_event_loop().run_in_executor(None, get_post_all_pipeline)
 
-@app.get("/find_posts")
+@app.get("/posts/search")
 @handle_exceptions
 async def find_posts(
     user_id: Optional[str] = Query(None),
     username: Optional[str] = Query(None)
 ):
-    """Retrieve posts with optional filtering by user ID and/or username"""
     return await asyncio.get_event_loop().run_in_executor(
         None, database_pipeline.find_posts, user_id, username
     )
@@ -50,7 +50,7 @@ async def get_post(post_id: str):
     )
 
 
-@app.post("/posts", response_model=SuccessResponse)
+@app.post("/post/create", response_model=SuccessResponse)
 @handle_exceptions
 async def create_post(post: Post):
     return await asyncio.get_event_loop().run_in_executor(
@@ -58,7 +58,7 @@ async def create_post(post: Post):
     )
 
 
-@app.put("/posts/{post_id}", response_model=SuccessResponse)
+@app.put("/post/update/{post_id}", response_model=SuccessResponse)
 @handle_exceptions
 async def update_post(post_id: str, post: Post):
     return await asyncio.get_event_loop().run_in_executor(
@@ -66,7 +66,7 @@ async def update_post(post_id: str, post: Post):
     )
 
 
-@app.delete("/posts/{post_id}", response_model=SuccessResponse)
+@app.delete("/post/delete/{post_id}", response_model=SuccessResponse)
 @handle_exceptions
 async def delete_post(post_id: str):
     return await asyncio.get_event_loop().run_in_executor(
@@ -74,11 +74,19 @@ async def delete_post(post_id: str):
     )
 
 
-@app.get("/posts/{post_id}/stats", response_model=SuccessResponse)
+@app.get("/post/stats/{post_id}", response_model=SuccessResponse)
 @handle_exceptions
 async def get_post_stats(post_id: str):
     return await asyncio.get_event_loop().run_in_executor(
         None, get_post_stats_pipeline, post_id
+    )
+
+
+@app.get("/post/get/{author}", response_model=SuccessResponse)
+@handle_exceptions
+async def get_posts_by_author(author: str):
+    return await asyncio.get_event_loop().run_in_executor(
+        None, get_posts_by_author_pipeline, author
     )
 
 

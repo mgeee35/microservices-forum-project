@@ -97,3 +97,11 @@ class MongoDB(DatabaseProtocol):
             stats["_id"] = str(stats["_id"])
             return PostStats(**stats)
         return None
+    
+    def get_posts_by_author(self, author: str) -> List[Post]:
+        """Get all posts by author from the database"""
+        posts = []
+        for post in self.posts_collection.find({"author": author}):
+            post["_id"] = str(post["_id"])
+            posts.append(Post(**post))
+        return posts

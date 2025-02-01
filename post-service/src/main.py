@@ -1,5 +1,5 @@
 import os
-from typing import Optional, List
+from typing import Optional
 
 from dotenv import load_dotenv
 
@@ -19,7 +19,6 @@ database_pipeline = DatabasePipeline.new_instance_from_config(
 def get_post_all_pipeline():
     posts = database_pipeline.get_post_all()
     return SuccessResponse(data=posts)
-
 
 def get_post_by_id_pipeline(post_id: str):
     post = database_pipeline.get_post_by_id(post_id)
@@ -44,6 +43,10 @@ def delete_post_pipeline(post_id: str):
 def get_post_stats_pipeline(post_id: str):
     post_stats = database_pipeline.get_post_stats(post_id)
     return SuccessResponse(data=post_stats)
+
+def get_posts_by_author_pipeline(author: str):
+    posts = database_pipeline.get_posts_by_author(author)
+    return SuccessResponse(data=posts)
 
 def find_posts(user_id: Optional[str] = None, username: Optional[str] = None):
     posts = database_pipeline.find_posts(user_id, username)
