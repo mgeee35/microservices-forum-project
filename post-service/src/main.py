@@ -2,7 +2,6 @@ import os
 from typing import Optional
 
 from dotenv import load_dotenv
-from pymongo import ASCENDING, DESCENDING
 
 from src.database.config_defs import DatabaseMainConfig
 from src.database.database_pipeline import DatabasePipeline
@@ -20,7 +19,7 @@ database_pipeline = DatabasePipeline.new_instance_from_config(
 def get_sorted_posts_pipeline(
     sort_by: str = "created_at",
     order: str = "desc",
-    author: Optional[str] = None  # Still allowing author filtering
+    author: Optional[str] = None
 ):
     posts = database_pipeline.get_post_all()
 
