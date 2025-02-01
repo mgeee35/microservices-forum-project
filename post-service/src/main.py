@@ -1,4 +1,5 @@
 import os
+from typing import Optional, List
 
 from dotenv import load_dotenv
 
@@ -43,3 +44,7 @@ def delete_post_pipeline(post_id: str):
 def get_post_stats_pipeline(post_id: str):
     post_stats = database_pipeline.get_post_stats(post_id)
     return SuccessResponse(data=post_stats)
+
+def find_posts(user_id: Optional[str] = None, username: Optional[str] = None):
+    posts = database_pipeline.find_posts(user_id, username)
+    return SuccessResponse(data=posts)

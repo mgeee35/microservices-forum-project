@@ -3,6 +3,7 @@ import asyncio
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.params import Query
 
 from src.decorators import handle_exceptions
 from src.main import *
@@ -30,6 +31,16 @@ app.add_middleware(
 async def get_posts():
     return await asyncio.get_event_loop().run_in_executor(None, get_post_all_pipeline)
 
+@app.get("/find_posts")
+@handle_exceptions
+async def find_posts(
+    user_id: Optional[str] = Query(None),
+    username: Optional[str] = Query(None)
+):
+    """Retrieve posts with optional filtering by user ID and/or username"""
+    return await asyncio.get_event_loop().run_in_executor(
+        None, database_pipeline.find_posts, user_id, username
+    )
 
 @app.get("/posts/{post_id}", response_model=SuccessResponse)
 @handle_exceptions

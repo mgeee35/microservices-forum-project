@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import pymongo
 from bson import ObjectId
@@ -64,11 +64,30 @@ class MongoDB(DatabaseProtocol):
         return self.get_post(post_id)
 
     def get_post_by_user_id(self, user_id: str) -> List[Post]:
-        """Get all posts by user id from the database"""
         posts = []
         for post in self.posts_collection.find({"user_id": user_id}):
             post["_id"] = str(post["_id"])
             posts.append(Post(**post))
+        return posts
+
+    def find_posts(self, user_id: Optional[str] = None, username: Optional[str] = None) -> List[Post]:
+
+        query = {}
+
+        # Add user_id filter if provided
+        if user_id:
+            query["user_id"] = user_id
+
+        # Add username filter if provided
+        if username:
+            query["username"] = {"$regex": f"^{username}", "$options": "i"}  # Case-insensitive, partial match
+
+        # Fetch posts from MongoDB
+        posts = []
+        for post in self.posts_collection.find(query):
+            post["_id"] = str(post["_id"])  # Convert ObjectId to string
+            posts.append(Post(**post))
+
         return posts
 
     def get_post_stats(self, post_id: str) -> PostStats:

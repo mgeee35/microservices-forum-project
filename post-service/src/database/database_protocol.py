@@ -1,4 +1,4 @@
-from typing import List, Protocol
+from typing import List, Protocol, Optional
 
 from src.server_models import Post, PostStats
 
@@ -24,6 +24,9 @@ class DatabaseProtocol(Protocol):
         pass
 
     def get_post_by_user_id(self, user_id: str) -> List[Post]:
+        pass
+
+    def find_posts(self, user_id: Optional[str] = None, username: Optional[str] = None) -> List[Post]:
         pass
 
     def get_post_stats(self, post_id: str) -> PostStats:
