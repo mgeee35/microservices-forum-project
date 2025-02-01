@@ -1,6 +1,7 @@
 # libraries
 mysql-connector==2.2.9
 mysql-connector-python==9.2.0
-Flask==3.1.0
-Bcrypt-Flask==1.0.2
-Flask-JWT-Extended==4.7.1
+flask==3.1.0
+bcrypt-flask==1.0.2
+flask-jwt-extended==4.7.1
+flask-cors==5.0.0
