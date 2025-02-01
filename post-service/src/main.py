@@ -16,11 +16,7 @@ database_pipeline = DatabasePipeline.new_instance_from_config(
 )
 
 
-def get_sorted_posts_pipeline(
-    sort_by: str = "created_at",
-    order: str = "desc",
-    author: Optional[str] = None
-):
+def get_post_all_pipeline():
     posts = database_pipeline.get_post_all()
 
     if not posts:
@@ -67,4 +63,8 @@ def get_post_stats_pipeline(post_id: str):
 
 def get_posts_by_author_pipeline(author: str):
     posts = database_pipeline.get_posts_by_author(author)
+    return SuccessResponse(data=posts)
+
+def find_posts(user_id: Optional[str] = None, username: Optional[str] = None):
+    posts = database_pipeline.find_posts(user_id, username)
     return SuccessResponse(data=posts)

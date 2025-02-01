@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from src.database.database_protocol import DatabaseProtocol
 from src.server_models import Post, PostStats
@@ -48,6 +48,9 @@ class DatabasePipeline(DatabaseProtocol):
     def get_post_by_user_id(self, user_id: str) -> List[Post]:
         """Get all posts by user id from the database"""
         return self.database.get_post_by_user_id(user_id)
+
+    def find_posts(self, user_id: Optional[str] = None, username: Optional[str] = None) -> List[Post]:
+        return self.database.find_posts(user_id, username)
 
     def get_post_stats(self, post_id: str) -> PostStats:
         """Get post stats from the database"""
