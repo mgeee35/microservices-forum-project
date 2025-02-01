@@ -31,10 +31,11 @@ app.add_middleware(
 async def get_posts(
     sort_by: Optional[str] = Query("created_at", enum=["created_at", "updated_at", "title", "author"]),
     order: Optional[str] = Query("desc", enum=["asc", "desc"]),
-    author: Optional[str] = Query(None)  # Author filter remains
+    page: int = Query(1, ge=1),
+    page_size: int = Query(10, ge=1)
 ):
     return await asyncio.get_event_loop().run_in_executor(
-        None, get_sorted_posts_pipeline, sort_by, order, author
+        None, get_sorted_posts_pipeline, sort_by, order, page, page_size
     )
 
 @app.post("/posts", response_model=SuccessResponse)
