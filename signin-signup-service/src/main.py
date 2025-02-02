@@ -116,7 +116,7 @@ def login():
             return jsonify({'message': 'Geçersiz kullanıcı adı veya şifre!'}), 401
 
         access_token = create_access_token(identity={'username': username})
-        return jsonify({'access_token': access_token}), 200
+        return jsonify({'access_token': access_token,'userInfo' : user}), 200
 
     except mysql.connector.Error as err:
         return jsonify({'error': str(err)}), 500
