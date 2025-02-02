@@ -10,14 +10,14 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const loginEvents = async (event) => {
+  const loginEvents = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     try {
       const response = await fetch("https://mosquito-dear-mainly.ngrok-free.app/login", {
