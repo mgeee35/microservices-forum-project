@@ -1,29 +1,25 @@
 import { useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 const ForumPage = () => {
-
   const [userPostsData, setUserPostsData] = useState<any[]>([]);  // Post verisini tutmak için state
   const [userFollowerData, setUserFollowerData] = useState<any[]>([]);  // Follower verisini tutmak için state
   const location = useLocation();
-  let { username, postsData, followerData } = location.state || {};  // location'dan veriyi alıyoruz
+  let { username, postsData, followerData,userInfoID } = location.state || {};  // location'dan veriyi alıyoruz
   const navigate = useNavigate();
-
   useEffect(() => {
     // postsData ve followerData verisi varsa, state'e set ediyoruz
     if (followerData) {
-      setUserFollowerData(followerData.followerIds);
+      setUserFollowerData(followerData.usernames);
     }
     if (postsData) {
       setUserPostsData(postsData.data);
     }
     }, [postsData, followerData]);
-
   const afterEvents = async () => {
     try {
       // Get Follower Data
-      const followerResponse = await fetch("https://439d-31-223-84-100.ngrok-free.app/Follow/followers/1", {
+      const followerResponse = await fetch("https://fly-next-shrimp.ngrok-free.app/Follow/followers/" + userInfoID, {
         method: "GET",
         headers: {
           "ngrok-skip-browser-warning": "true"
@@ -31,36 +27,25 @@ const ForumPage = () => {
       });
       followerData = await followerResponse.json();
       // Get All Posts
-      const postsResponse = await fetch("https://5cad-212-253-197-38.ngrok-free.app/post/list", {
+      const postsResponse = await fetch("https://relaxing-humble-snapper.ngrok-free.app/post/list", {
         method: "GET",
         headers: {
           "ngrok-skip-browser-warning": "true"
         }
       });
       postsData = await postsResponse.json();
- 
     } catch (error) {
       console.error('Error fetching data:', error);
     }
- 
-    const usernameElement = document.getElementById('username') as HTMLInputElement;
-    let username = "";
-    if (usernameElement) {
-      username = usernameElement.value;
-    }
-    navigate('/forum', { state: { username,followerData,postsData} });
+    navigate('/forum', { state: { username,followerData,postsData,userInfoID} });
   };
-
     const sendPost = () => {
-
-        const url = 'https://5cad-212-253-197-38.ngrok-free.app/posts';  // Değiştirilecek URL
-
+        const url = 'https://relaxing-humble-snapper.ngrok-free.app/post/create';  // Değiştirilecek URL
         const content = document.getElementById('postingArea') as HTMLInputElement;;
         let contentText;
         if(content){
             contentText = content.value;
         }
-
         let data = {
             "title": "Title",
             "content": contentText,
@@ -82,28 +67,29 @@ const ForumPage = () => {
           })
           .then((responseData) => {
             console.log('Başarıyla gönderildi:', responseData);
+            alert('Post başarıyla atıldı.')
             // İsteğin başarılı olduğunu kullanıcıya bildirebilirsiniz
           })
           .catch((error) => {
             console.error('Hata:', error);
+            alert('Post servisi hata aldı.')
             // Hata mesajını kullanıcıya gösterebilirsiniz
           });
-
           afterEvents();
-
     };
-
     const followUser = () => {
-        const url = 'https://439d-31-223-84-100.ngrok-free.app/Follow';  // Değiştirilecek URL
 
+
+
+        //const url = 'https://fly-next-shrimp.ngrok-free.app/Follow';  // Değiştirilecek URL
+        const url = "https://mosquito-dear-mainly.ngrok-free.app/getUserID";
         const content = document.getElementById('list-posts-input-field') as HTMLInputElement;;
         let contentText;
         if(content){
             contentText = content.value;
         }
-
         let data = {
-            "userId": contentText
+            "username": contentText
         };
         // fetch ile POST isteği
         fetch(url, {
@@ -120,36 +106,54 @@ const ForumPage = () => {
             throw new Error('Bir hata oluştu');
           })
           .then((responseData) => {
+            if(responseData.userID===undefined || responseData.userID===null){
+              alert('Böyle bir kullanıcı bulunmamaktadır.');
+              return;
+            }
             console.log('Başarıyla gönderildi:', responseData);
-            // İsteğin başarılı olduğunu kullanıcıya bildirebilirsiniz
+            const url = 'https://fly-next-shrimp.ngrok-free.app/Follow';
+            let data = {
+              "userId": userInfoID,
+              "followerId" : responseData.userID.id
+            };
+            fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),  // Veriyi JSON formatında gönderiyoruz
+            })
+            .then((response) => {
+              if (response.ok) {
+                alert('Takip edilmeye başlandı.')
+              }
+              else{
+                alert('Kullanıcı zaten takip ediliyor.')
+              }
+            })
+            .then((responseData) => {
+              console.log('Başarıyla gönderildi:', responseData);
+              afterEvents();
+            })
           })
           .catch((error) => {
             console.error('Hata:', error);
             // Hata mesajını kullanıcıya gösterebilirsiniz
           });
-
-          afterEvents();
     }
-
     const listPostsByUsername = () => {
-
-
         const content = document.getElementById('list-posts-input-field') as HTMLInputElement;;
         let contentText;
         if(content){
             contentText = content.value;
         }
-        
         let url = '';
-
         if(contentText === ''){
-            url = 'https://5cad-212-253-197-38.ngrok-free.app/post/list';
+            url = 'https://relaxing-humble-snapper.ngrok-free.app/post/list';
         }
         else{
-            url = 'https://5cad-212-253-197-38.ngrok-free.app/post/get/'+ contentText ;
+            url = 'https://relaxing-humble-snapper.ngrok-free.app/post/get/'+ contentText ;
         }
-
-
         // fetch ile POST isteği
         fetch(url, {
           method: 'GET',
@@ -172,9 +176,7 @@ const ForumPage = () => {
             console.error('Hata:', error);
             // Hata mesajını kullanıcıya gösterebilirsiniz
           });
-
     };
-
     return(
         <div className="forum-container">
             <div className="forum-header-container">
@@ -205,5 +207,4 @@ const ForumPage = () => {
         </div>
       )
 };
-
 export default ForumPage;
