@@ -1,22 +1,18 @@
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom'; 
 import { useState } from 'react';
-
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
   const navigate = useNavigate();
-
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-
   const loginEvents = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     try {
@@ -27,27 +23,24 @@ const LoginPage = () => {
         },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
       console.log("Response:", response.status, data);
-
       if (response.ok) {
         try {
+          const userInfoID = data.userInfo.id;
           const [followerResponse, postsResponse] = await Promise.all([
-            fetch("https://439d-31-223-84-100.ngrok-free.app/Follow/followers/1", {
+            fetch("https://fly-next-shrimp.ngrok-free.app/Follow/followers/" + userInfoID, {
               method: "GET",
               headers: { "ngrok-skip-browser-warning": "true" },
             }),
-            fetch("https://5cad-212-253-197-38.ngrok-free.app/post/list", {
+            fetch("https://relaxing-humble-snapper.ngrok-free.app/post/list", {
               method: "GET",
               headers: { "ngrok-skip-browser-warning": "true" },
             }),
           ]);
-
           const followerData = await followerResponse.json();
           const postsData = await postsResponse.json();
-
-          navigate('/forum', { state: { username: formData.username, followerData, postsData } });
+          navigate('/forum', { state: { username: formData.username, followerData, postsData,userInfoID } });
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -59,7 +52,6 @@ const LoginPage = () => {
       alert("Bir hata oluştu, lütfen tekrar deneyin.");
     }
   };
-
   return (
     <div className="login-container">
       <h2 className="form-title">Login Page</h2>
@@ -94,5 +86,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
 export default LoginPage;
