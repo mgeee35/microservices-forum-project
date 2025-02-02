@@ -3,13 +3,13 @@ from mysql.connector import Error
 from flask import Flask, request, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
-from flask_cors import CORS  # CORS modülünü import ediyoruz
+import flask_cors
 import re  # Regex modülü
 
 app = Flask(__name__)
 
 # CORS'u uygulamaya dahil ediyoruz
-CORS(app)  # Bu şekilde tüm domainlere izin verir. Belirli domainler için de yapılandırılabilir.
+flask_cors.CORS(app)  # Bu şekilde tüm domainlere izin verir. Belirli domainler için de yapılandırılabilir.
 
 bcrypt = Bcrypt(app)
 
@@ -127,7 +127,84 @@ def login():
             connection.close()
 
 
-# Korunan Endpoint (JWT gerektirir)
+@app.route('/getUserID', methods=['POST'])
+def getUserID():
+    data = request.json
+    username = data.get('username')
+
+    if not username:
+        return jsonify({'message': 'Kullanıcı gereklidir!'}), 400
+
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT id FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        print(user)
+
+        return jsonify({'userID': user}), 200
+
+    except mysql.connector.Error as err:
+        return jsonify({'error': str(err)}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+        @app.route('/getUserID', methods=['POST'])
+        def getUserID():
+            data = request.json
+            username = data.get('username')
+
+            if not username:
+                return jsonify({'message': 'Kullanıcı gereklidir!'}), 400
+
+            try:
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
+                cursor.execute("SELECT id FROM users WHERE username = %s", (username,))
+                user = cursor.fetchone()
+                print(user)
+
+                return jsonify({'userID': user}), 200
+
+            except mysql.connector.Error as err:
+                return jsonify({'error': str(err)}), 500
+            finally:
+                if cursor:
+                    cursor.close()
+                if connection:
+                    connection.close()
+
+@app.route('/getUsername', methods=['POST'])
+def getUsername():
+    data = request.json
+    userID = data.get('userID')
+
+    if not userID:
+        return jsonify({'message': 'Kullanıcı gereklidir!'}), 400
+
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT username FROM users WHERE id = %s", (userID,))
+        user = cursor.fetchone()
+        print(user)
+
+        return jsonify({'userName': user}), 200
+
+    except mysql.connector.Error as err:
+        return jsonify({'error': str(err)}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+        # Korunan Endpoint (JWT gerektirir)
+
+
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
