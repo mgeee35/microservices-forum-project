@@ -152,7 +152,6 @@ def getUserID():
         if connection:
             connection.close()
 
-
 @app.route('/getUsername', methods=['POST'])
 def getUsername():
     data = request.json
