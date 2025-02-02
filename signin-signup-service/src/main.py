@@ -152,30 +152,6 @@ def getUserID():
         if connection:
             connection.close()
 
-        @app.route('/getUserID', methods=['POST'])
-        def getUserID():
-            data = request.json
-            username = data.get('username')
-
-            if not username:
-                return jsonify({'message': 'Kullanıcı gereklidir!'}), 400
-
-            try:
-                connection = mysql.connector.connect(**db_config)
-                cursor = connection.cursor(dictionary=True)
-                cursor.execute("SELECT id FROM users WHERE username = %s", (username,))
-                user = cursor.fetchone()
-                print(user)
-
-                return jsonify({'userID': user}), 200
-
-            except mysql.connector.Error as err:
-                return jsonify({'error': str(err)}), 500
-            finally:
-                if cursor:
-                    cursor.close()
-                if connection:
-                    connection.close()
 
 @app.route('/getUsername', methods=['POST'])
 def getUsername():
