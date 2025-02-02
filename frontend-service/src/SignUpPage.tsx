@@ -1,22 +1,18 @@
 import { useState } from "react";
-
 const SignUpPage = () => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
         emailaddress: ""
     });
-
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
     };
-
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-
         try {
             const response = await fetch("https://mosquito-dear-mainly.ngrok-free.app/register", {
                 method: "POST",
@@ -25,13 +21,8 @@ const SignUpPage = () => {
                 },
                 body: JSON.stringify(formData)
             });
-
-           
-
-
             const data = await response.json();
             console.log("Response:", response.status, data);
-    
             if (response.ok) {
                 // Kayıt başarılıysa Google'a yönlendir
                 alert("Kullanıcı başarıyla kaydedildi!");
@@ -46,7 +37,6 @@ const SignUpPage = () => {
             alert("Bir hata oluştu, lütfen tekrar deneyin.");
         }
     };
-
     return (
         <div className="signup-container">
             <h2 className="signup-title">Sign Up</h2>
@@ -84,11 +74,9 @@ const SignUpPage = () => {
                         onChange={handleChange}
                     />
                 </div>
-
                 <button type="submit" className="signup-button">Sign Up</button>
             </form>
         </div>
     );
 };
-
 export default SignUpPage;
