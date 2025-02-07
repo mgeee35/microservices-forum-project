@@ -1,1 +1,1 @@
-# ege-microservices-term-project
+# microservices-simple-forum-project
